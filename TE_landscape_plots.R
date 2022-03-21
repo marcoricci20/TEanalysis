@@ -66,7 +66,9 @@ DATA_bps$Mb = DATA_bps$Length / 1000000
 DATA_bps$Percentage = (DATA_bps$Mb / genomesize) * 100
 
 elements = c("DNA","RC","SINE","LINE","LTR","Unknown")
-colors = c("#0070C0","#00FFCC","#61E101", "#048A1E", "#FF0000", "#7030A0")
+colors = data.frame(Element = elements, Color = c("#0070C0","#00FFCC","#61E101", "#048A1E", "#FF0000", "#7030A0"))
+
+colors = colors[colors$Element %in% unique(DATA_bps$Element),]
 
 DATA_bps$Element = factor(x = DATA_bps$Element, levels = elements)
 
