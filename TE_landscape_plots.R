@@ -40,17 +40,15 @@ DATA = DATA[,c(1:6,9,7,8)]
 # replace "C" with "-" in the Strand column
 DATA$Strand = sub(pattern = "C", replacement = "-", x = DATA$Strand)
 
-# Discard elements we are not interested into
-DISCARD = c("Low_complexity", "Satellite", "Simple_repeat", "tRNA", "rRNA", "scRNA", "srpRNA", "snRNA", "Unspecified", "RNA")
-DATA = DATA[!DATA$Family %in% DISCARD,]
-boo = grepl(pattern = "DNA\\?|LTR\\?|RC\\?|SINE\\?|Retrogene|Retroposon|RNA|rRNA|scRNA|Segmenta|Simple_repeat|snRNA|tRNA|Satellite", x = DATA$Family)
-DATA = DATA[!boo,]
-
 # round the divergence values
 DATA$RoundDiv = floor(DATA$Divergence)
 
 # group elements in major classes
 DATA$newFamily = sapply(strsplit(x = DATA$Family,split = "/"), "[", 1)
+
+# keep only these elements
+KEEP = c("SINE", "LINE", "LTR", "DNA", "Unknown", "RC")
+DATA = DATA[DATA$newFamily %in% KEEP,] 
 
 # create a factor with the name of the subfamily/element and the divergence associated to it
 # so we can get the number of bps associated to that particular subfamily at that particular divergence
