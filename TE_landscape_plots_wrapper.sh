@@ -7,5 +7,5 @@ do
  SPECIES=${OUT%.*.*}
  GS=`grep $SPECIES genome_size.txt | cut -f2`
  PREFIX=${SPECIES}_landscape
- Rscript --vanilla TE_lanscape_plots.R $OUT $GS $PREFIX
+ Rscript --vanilla TE_landscape_plots.R $OUT $GS $PREFIX
 done 
