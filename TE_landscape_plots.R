@@ -5,6 +5,8 @@ library(ggplot2)
 library(RColorBrewer)
 
 genomeSize = read.table("genome_size.txt", stringsAsFactors = FALSE, sep = "\t", header = FALSE)
+
+# RepeatMasker out names must be in form: hetGla.fasta.out musMus.fasta.out etc to match the names in the genomeSize
 outfiles = list.files(pattern = ".fasta.out")
 
 
