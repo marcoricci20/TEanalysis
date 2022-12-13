@@ -1,6 +1,72 @@
 ## Ricci et al 2021 - Comparative analysis of bats and rodents' genomes suggests a relation between
 ## non-LTR retrotransposons, cancer incidence, and ageing
 
+# -------------------------------------------------
+
+## Code used for running RepeatModeler2 on Heterocephalus glaber genome assembly
+
+module load bioinfo-tools
+module load RepeatModeler/2.0.3
+
+BuildDatabase -name hetGlaDB hetGla.fasta
+RepeatModeler -database hetGlaDB -pa 20 -LTRStruct
+# hetGla_rm1.0.lib is the library with the new consensus sequences for the species
+
+# -------------------------------------------------
+
+## Code for building the hetGla library
+
+module load bioinfo-tools
+module load RepeatMasker/4.1.0
+
+queryRepeatDatabase.pl -species rodents > rodents.lib
+grep 'L2|MIR' | cut -c2- rodents.lib > list_ancient_rodent_TEs.txt
+perl extractFromFasta.pl rodents.lib list list_ancient_rodent_TEs.txt > list_ancient_rodent_TEs.fasta
+cat hetGla_rm1.0.lib list_ancient_rodent_TEs.fasta > hetGla_rm1.1.lib
+
+# -------------------------------------------------
+
+## The repeat libraries for the other rodents were already established and directly specified in the RepeatMasker command
+## The repeat library for bats was retrieved from Jebb et al 2020. Here the bat library is called bats.lib (includes Repbase)
+
+# -------------------------------------------------
+
+## Code used for running RepeatMasker on all the genome assemblies
+
+module load bioinfo-tools
+module load RepeatMasker/4.1.0
+
+# cavPor
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -species cavia porcellus cavPor.fasta
+
+# hetGla
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -lib hetGla_rm1.1.lib hetGla.fasta
+
+# ratNor
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -species rattus norvegicus ratNor.fasta
+
+# musMus
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -species mus musculus musMus.fasta
+
+# molMol
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -lib bats.lib molMol.fasta
+
+# myoLuc
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -lib bats.lib myoLuc.fasta
+
+# myoMyo
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -lib bats.lib myoMyo.fasta
+
+# pteVam
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -lib bats.lib pteVam.fasta
+
+# rhiFer
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -lib bats.lib rhiFer.fasta
+
+# rouAeg
+RepeatMasker -pa 20 -a -xsmall -gccalc -excln -lib bats.lib rouAeg.fasta
+
+# the output files have names like: hetGla.fasta.out, molMol.fasta.out, etc...
 
 # -------------------------------------------------
 
