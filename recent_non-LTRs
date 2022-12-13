@@ -1,0 +1,62 @@
+---
+title: "Density_insertion"
+author: "Marco Ricci"
+date: "13/12/2022"
+output: 
+---
+
+```{r setup, include=FALSE}
+
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+
+DATA = fread(file = "Path/Transposable_elements.out", header = F, stringsAsFactors = F, skip = 3, fill = T)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+DATA = DATA[,c(5,6,7,9,10,11,2,15)]
+names(DATA) = c("Scaffold", "Begin", "End", "Strand", "Element", "Family", "Divergence", "ID")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r pressure, echo=FALSE}
+DATA = DATA[DATA$Divergence < 3,]
+```
+
+
+```{r pressure, echo=FALSE}
+
+boo = grepl(pattern = "LINE|SINE", x = DATA$Family)
+DATA = DATA[boo,]
+```
+
+
+```{r pressure, echo=FALSE}
+table (DATA$Family)
+
+```
+
+
+```{r pressure, echo=FALSE}
+length(unique(DATA$ID))
+
+```
+
+```{r pressure, echo=FALSE}
+write.table(x= DATA, file="Path/rescent_non-LTR.out",quote=FALSE,sep="\t",col.names=FALSE,row.names=FALSE)
